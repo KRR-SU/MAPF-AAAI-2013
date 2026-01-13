@@ -1,0 +1,40 @@
+
+% file: mapf.gr
+
+% generate paths
+% path(R,S,V) iff the robot R is on vertex V when the Sth edge on the path is generated.
+path(R,0,V) :- start(R,V).
+% a robot can remain at the same position or move to an adjecent vertex
+% at the next step unless the maximum number of steps is taken.
+1{ path(R,S+1,V); path(R,S+1,P) : edge(V,P) }1 :- path(R,S,V), S < k.
+
+vertex(V) :- edge(V,_).
+vertex(V) :- edge(_,V).
+
+% agents must not visit obstacles
+:- path(R,S,P), obstacle(P).
+
+% visit(R,V) iff the robot R visits vertex V at some step S.
+visit(R,V) :- path(R,S,V).
+
+% goal constraint : each robot reaches its goal destination.
+:- goal(R,V),  not visit(R,V).
+
+
+#show path/3.
+
+% file meeting.gr
+
+% meeting constraint : no two agents meet at the same place.
+
+:- path(R1,S,V), path(R2,S,V), R1<R2.
+
+% minimization time optimality
+goalvisited(R,S) :- path(R,S,V), goal(R,V).
+goalvisitedbelow(R,S) :- goalvisited(R,S), goalvisited(R,Sbelow), Sbelow < S.
+goalvisitedfirst(R,S) :- goalvisited(R,S), not goalvisitedbelow(R,S).
+usetime(S) :- goalvisitedfirst(R,S).
+usetime(S-1) :- usetime(S), S > 0.
+maxtime(S) :- usetime(S), not usetime(S+1).
+
+#minimize{S@1: maxtime(S)}.

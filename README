@@ -1,0 +1,15 @@
+The Makefile in this directory contains all instructions to run the tests.
+
+You need the "runlim" tool from http://fmv.jku.at/runlim/
+
+To run all tests in this directory with 8-fold parallelization (as done in
+the paper):
+
+  $ make -j 8 -k
+
+To run a single test, give the logfile as target, e.g.:
+
+  $ make Makefile.logs/10-agt-10-pct-obs-10.asp.handy.time
+
+Each value in the table of the paper corresponds to 10 logfiles (the last
+number is the instance index) which are accumulated.
