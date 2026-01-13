@@ -1,3 +1,7 @@
+** You need to change run_int.sh for the relevant version of clingo. **
+
+%---------------
+
 The Makefile in this directory contains all instructions to run the tests.
 
 You need the "runlim" tool from http://fmv.jku.at/runlim/
